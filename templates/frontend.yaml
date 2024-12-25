@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frontend # label of deployment
+  name: frontend
+  namespace: nginx-ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: frontend # label of pod
+    spec:
+      nodeName: aks-nodepool1-24536462-vmss000000
+      containers:
+      - image: ameentauseef/containerize:1.0.1-SNAPSHOT
+        name: app-frontend
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 50m
+            memory: "100Mi"
+          limits:
+            cpu: 100m
+            memory: "128Mi"
+status: {}

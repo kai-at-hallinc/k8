@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timetable-be  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timetable-be
+  template:
+    metadata:
+      labels:
+        app: timetable-be
+    spec:
+      containers:
+      - name: timetable-be
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
+        env:
+        - name: TITLE
+          value: "timetable Backend"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timetable-fe  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timetable-fe
+  template:
+    metadata:
+      labels:
+        app: timetable-fe
+    spec:
+      containers:
+      - name: timetable-fe
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
+        env:
+        - name: TITLE
+          value: "timetable Frontend"

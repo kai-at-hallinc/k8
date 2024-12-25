@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend # label of deployment
+  name: backend
+  namespace: nginx-ingress
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: backend # label of pod
+    spec:
+      nodeName: aks-nodepool1-24536462-vmss000000
+      containers:
+      - image: ameentauseef/reactiveservice:0.0.1-SNAPSHOT
+        name: app-backend
+        ports:
+        - containerPort: 8081
+        resources:
+          requests:
+            cpu: 50m
+            memory: "100Mi"
+          limits:
+            cpu: 100m
+            memory: "128Mi"
+status: {}

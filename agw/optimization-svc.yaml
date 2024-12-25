@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: optimization-svc
+  labels:
+    app: optimization
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: optimization
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: celery-svc
+  labels:
+    app: celery
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: celery
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-svc
+  labels:
+    app: rabbitmq
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: rabbitmq

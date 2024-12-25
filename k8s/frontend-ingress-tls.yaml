@@ -1,0 +1,57 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ghallocation-ui-ingress
+  namespace: ghallocation
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 8m
+    nginx.ingress.kubernetes.io/configuration-snippet: |-
+      rewrite ^(/lukkari/api/v1)(.*) /lukkariapi$2 last;
+      rewrite ^(/lukkari/)((?!api).*) /lukkarifrontend/lukkari/$2 last;
+      rewrite ^(/lukkari)$ /lukkarifrontend/lukkari last;
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - ghallocation-stage.westeurope.cloudapp.azure.com
+    secretName: tls-secret-tw
+  rules:
+   - host: ghallocation-stage.westeurope.cloudapp.azure.com
+     http:
+        paths:
+          - path: /lukkariapi/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: security-timetable-be-svc
+                port:
+                  number: 4000
+          - path: /lukkarifrontend/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: security-timetable-fe
+                port:
+                  number: 3000
+          - path: /((?!api).*)  #/(^(!api).*) #([^a]*)   # exclude api urls [^a*]
+            pathType: Prefix
+            backend:
+              service:
+                name: ghallocation-ui
+                port:
+                  number: 3000
+          - path: /api/v1/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: ghallocation-be-svc
+                port:
+                  number: 4000
+
+
+
+
+
+

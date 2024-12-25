@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: timetable-be-svc
+  labels:
+    app: timetable-be
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: timetable-be
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timetable-fe-svc
+  labels:
+    app: timetable-fe
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+  selector:
+    app: timetable-fe

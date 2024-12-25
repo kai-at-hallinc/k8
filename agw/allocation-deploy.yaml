@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: allocation-be  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: allocation-be
+  template:
+    metadata:
+      labels:
+        app: allocation-be
+    spec:
+      containers:
+      - name: allocation-be
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
+        env:
+        - name: TITLE
+          value: "Allocation Backend"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: allocation-fe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: allocation-fe
+  template:
+    metadata:
+      labels:
+        app: allocation-fe
+    spec:
+      containers:
+      - name: allocation-fe
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "50m"
+        env:
+        - name: TITLE
+          value: "Allocation Frontend"
