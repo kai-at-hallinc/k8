@@ -18,7 +18,6 @@ module "aks" {
   sku_tier                         = "Free" # can also be Free
   # TODO: change this when we'll have an AD
   role_based_access_control_enabled = true
-  rbac_aad_admin_group_object_ids  = [data.azuread_group.aks_cluster_admins.id]
   rbac_aad_managed                 = true
   
   # TODO: private_cluster_enabled - If true cluster API server will be exposed only on internal IP address and available only in cluster vnet.
@@ -26,7 +25,7 @@ module "aks" {
   http_application_routing_enabled  = true
   azure_policy_enabled              = true
   enable_auto_scaling              = true
-  enable_host_encryption           = true
+  enable_host_encryption           = false # remember to true when deployed
   agents_min_count                 = 1
   agents_max_count                 = 2
   agents_count                     = null
@@ -46,7 +45,6 @@ module "aks" {
   net_profile_docker_bridge_cidr = var.aks_docker_cidr
   net_profile_service_cidr       = var.aks_service_cidr
   enable_node_public_ip          = false
-
   log_analytics_workspace_enabled       = true
   cluster_log_analytics_workspace_name = var.cluster_log_analytics_workspace_name
 

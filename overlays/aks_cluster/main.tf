@@ -24,8 +24,6 @@ data "azurerm_subnet" "aks_subnet" {
   virtual_network_name = local.virtual_network_name
 }
 
-
-
 module "kubernetes" {
   source                                  = "../../modules/kubernetes"
   location                                = var.location
@@ -41,7 +39,8 @@ module "kubernetes" {
   aks_dns_service_ip                      = var.aks_dns_service_ip
   aks_docker_cidr                         = var.aks_docker_cidr
   ingress_application_gateway_subnet_cidr = var.ingress_application_gateway_subnet_cidr
-  
+  cluster_log_analytics_workspace_name    = "loa-${var.project}-${var.env}-${var.tenant_name}-aks"
+
   depends_on = [ data.azurerm_subnet.aks_subnet]
 }
 

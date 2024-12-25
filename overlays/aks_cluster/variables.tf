@@ -46,6 +46,11 @@ variable "private_endpoint_cidr" {
   description = "The private endpoint subnet address space."
 }
 
+variable "aks_docker_cidr" {
+  type        = string
+  description = "IP address (in CIDR notation) used as the Docker bridge IP address on nodes. "
+}
+
 variable "aks_cidr" {
   type        = string
   description = "The aks subnet address space."
