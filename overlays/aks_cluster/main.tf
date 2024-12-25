@@ -4,11 +4,10 @@ locals {
   private_endpoint_subnet_name      = "snet-pe-${var.project}-${var.env}-${var.tenant_name}"
   virtual_network_name              = "vnet-${var.project}-${var.env}-${var.tenant_name}"
   aks_subnet_name                   = "snet-aks-${var.project}-${var.env}-${var.tenant_name}"
-  aks_node_resource_group           = "aks-nodes-${var.project}-${var.env}-${var.tenant_name}"
+  aks_node_resource_group           = "rg-nodes-${var.project}-${var.env}-${var.tenant_name}"
   ingress_static_ip_name            = "ingress-static-ip"
 }
 
-# get existin resources
 data "azurerm_container_registry" "acr" {
   name                = local.container_registry
   resource_group_name = local.parent_resource_group
@@ -26,7 +25,7 @@ data "azurerm_subnet" "aks_subnet" {
 }
 
 
-# Create AKS cluster using resources from modules directory
+
 module "kubernetes" {
   source                                  = "../../modules/kubernetes"
   location                                = var.location
@@ -40,8 +39,9 @@ module "kubernetes" {
   ingress_application_gateway_name        = "aks-agw-${var.project}-${var.env}-${var.tenant_name}"
   aks_service_cidr                        = var.aks_service_cidr
   aks_dns_service_ip                      = var.aks_dns_service_ip
+  aks_docker_cidr                         = var.aks_docker_cidr
   ingress_application_gateway_subnet_cidr = var.ingress_application_gateway_subnet_cidr
-  cluster_log_analytics_workspace_name    = "loa-${var.project}-${var.env}-${var.tenant_name}-aks"
+  
   depends_on = [ data.azurerm_subnet.aks_subnet]
 }
 
@@ -53,7 +53,7 @@ resource "azurerm_role_assignment" "aks_vnet" {
   depends_on = [ module.kubernetes]
 }
 
-# grant permission to pull images for kubelet managed identity
+
 resource "azurerm_role_assignment" "aks_sp_container_registry" {
   scope                = "${data.azurerm_container_registry.acr.id}"
   role_definition_name = "AcrPull"

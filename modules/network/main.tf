@@ -12,8 +12,8 @@ resource "azurerm_subnet" "private_endpoint" {
   virtual_network_name = var.virtual_network_name
   address_prefixes     = [var.private_endpoint_cidr]
 
-  private_endpoint_network_policies = "Disabled"
-  private_link_service_network_policies_enabled  = false
+  enforce_private_link_endpoint_network_policies = true
+  enforce_private_link_service_network_policies  = false
   
   service_endpoints                              = [
     "Microsoft.ContainerRegistry",
@@ -29,7 +29,7 @@ resource "azurerm_subnet" "aks_subnet" {
   virtual_network_name = var.virtual_network_name
   address_prefixes     = [var.aks_cidr]
 
-  private_endpoint_network_policies = "Disabled"
+  enforce_private_link_endpoint_network_policies = true
 
   service_endpoints = [
     "Microsoft.KeyVault",

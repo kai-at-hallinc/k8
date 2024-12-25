@@ -1,6 +1,6 @@
 variable "tenant_name" {
   type = string
-  description = "Hallinc"
+  description = "Either of tw or airpro"
 }
 
 variable "subscription_id" {
@@ -32,10 +32,6 @@ variable "env" {
   type = string
 }
 
-variable "prefix" {
-  type = string
-}
-
 variable "vnet_cidr" {
   type = string
 }
@@ -60,12 +56,22 @@ variable "aks_dns_service_ip" {
   description = "IP address within the Kubernetes service address range that will be used by cluster service discovery (kube-dns)."
 }
 
+variable "aks_docker_cidr" {
+  type        = string
+  description = "IP address (in CIDR notation) used as the Docker bridge IP address on nodes. "
+}
+
 variable "ingress_application_gateway_subnet_cidr" {
   type        = string
   description = "The subnet CIDR to be used to create an Application Gateway, which in turn will be integrated with the ingress controller of this Kubernetes Cluster."
 }
 
+variable "allowed_subnet_ids" {
+  type        = list(string)
+  description = "List of subnet IDs to be allowed to access the ACR"
+}
+
 variable "allowed_ips" {
-  type        = string
+  type        = list(string)
   description = "List of IPs to be allowed to access the ACR"
 }

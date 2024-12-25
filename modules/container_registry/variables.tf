@@ -14,8 +14,12 @@ variable "container_registry_name" {
   description = "The container registry name."
 }
 
+variable "allowed_subnet_ids" {
+  type        = list(string)
+  description = "List of subnet IDs to be allowed to access the ACR"
+}
 
 variable "allowed_ips" {
-  type        = string
+  type        = list(string)
   description = "List of IPs to be allowed to access the ACR"
 }

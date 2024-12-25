@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.106.1, <= 4.14.0"
+      version = "3.27.0"
     }
   }
 
@@ -26,7 +26,7 @@ provider "azurerm" {
       delete_nested_items_during_deletion = true
     }
   }
-
+  subscription_id = var.subscription_id
   skip_provider_registration = true
 }
 
