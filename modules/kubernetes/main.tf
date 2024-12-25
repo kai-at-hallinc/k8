@@ -5,9 +5,6 @@ module "aks" {
   version = "6.3.0"
   resource_group_name              = var.aks_rg
   node_resource_group              = var.node_resource_group
-  # TODO set these when we get a service principal. Now we use SystemAssigned identity
-  #  client_id                        = "your-service-principal-client-appid"
-  #  client_secret                    = "your-service-principal-client-password"
   identity_type                    = "SystemAssigned"
   kubernetes_version               = "1.30"
   orchestrator_version             = "1.30"
@@ -16,11 +13,12 @@ module "aks" {
   vnet_subnet_id                   = var.aks_subnet_id
   os_disk_size_gb                  = 80
   sku_tier                         = "Free" # can also be Free
-  # TODO: change this when we'll have an AD
-  role_based_access_control_enabled = true
-  rbac_aad_managed                 = true
   
-  # TODO: private_cluster_enabled - If true cluster API server will be exposed only on internal IP address and available only in cluster vnet.
+  # TODO: change this when cluster is updated to v4.0.0
+  #role_based_access_control_enabled = true
+  #rbac_aad_managed                 = true
+  
+  # TODO: private_cluster_enabled - API server will be exposed only on internal IP address
   private_cluster_enabled          = false
   http_application_routing_enabled  = true
   azure_policy_enabled              = true
@@ -31,7 +29,7 @@ module "aks" {
   agents_count                     = null
   agents_size                      = var.aks_vm_size
 
-  # Please set `agents_count` `null` while `enable_auto_scaling` is `true` to avoid possible `agents_count` changes.
+  # Please set `agents_count` `null` while `enable_auto_scaling` is `true`
   agents_max_pods                  = 100
   agents_pool_name                 = "exnodepool"
   agents_type                      = "VirtualMachineScaleSets"

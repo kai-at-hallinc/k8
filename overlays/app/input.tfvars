@@ -1,6 +1,6 @@
-parent_resource_group_name              = "rg-resourceplanning-test-westeu-001"
+parent_resource_group_name              = "aks-sandbox-rg"
 env                                     = "stage"
-project                                 = "ghallocation"
-location                                = "westeurope"
+project                                 = "test"
+location                                = "swedencentral"
 
 

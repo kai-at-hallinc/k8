@@ -94,10 +94,10 @@ resource "helm_release" "nginx-ingress" {
 
   set {
     name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-dns-label-name"
-    value = "ghallocation-${var.env}"
+    value = "aks-test-${var.env}"
   }
 
-  ## This is where the public static IP address must be located.
+  ## This is where the public static IP address must be located:-> managed rg
   set {
     name = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"
     value = data.azurerm_resource_group.aks_rg.name
