@@ -1,25 +1,61 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: application-ingress 
+  name: application-ingress
   annotations:
-    kubernetes.io/ingress.class: "nginx" # specify the ingress class
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/backend-path-prefix: /
 spec:
-  ingressClassName: nginx # this is needed also
+  ingressClassName: azure-application-gateway # might raise a bug. retry.
   rules:
   - http:
       paths:
-      - backend:
+      - pathType: Exact
+        path: /allocation
+        backend:
           service:
-            name: frontend
+            name: allocation-be-svc
             port:
               number: 80
-        path: /greeting
-        pathType: Prefix
-      - backend:
+      - pathType: Exact
+        path: /timetable
+        backend:
           service:
-            name: backend
+            name: timetable-fe-svc
             port:
               number: 80
-        path: /k8s
-        pathType: Prefix
+      - pathType: Exact
+        path: /security
+        backend:
+          service:
+            name: timetable-be-svc
+            port:
+              number: 80
+      - pathType: Exact
+        path: /optimization
+        backend:
+          service:
+            name: optimization-svc
+            port:
+              number: 80
+      - pathType: Exact
+        path: /celery
+        backend:
+          service:
+            name: celery-svc
+            port:
+              number: 80
+      - pathType: Exact
+        path: /rabbitmq
+        backend:
+          service:
+            name: rabbitmq-svc
+            port:
+              number: 80
+      - pathType: Exact
+        path: /
+        backend:
+          service:
+            name: allocation-fe-svc
+            port:
+              number: 80
