@@ -115,17 +115,16 @@ jobs:
         --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
         --name ${{ secrets.AKS_CLUSTER_NAME }}
 
-    - name: Run deployment script
+    - name: Run deployments
       run: |
         chmod +x ./deploy.sh
         ./deploy.sh
         sleep 60
-        echo "sleep 60 seconds"
+        echo "sleeping for 60 seconds.."
     
-    - name: Run deployment script
+    - name: Run tests
       run: |
-        echo "run test"
+        echo "running tests.."
         chmod +x ./test-pod-to-pod.sh
         ./test-pod-to-pod.sh
-        sleep 60
         
