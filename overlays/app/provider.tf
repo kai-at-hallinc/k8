@@ -2,27 +2,23 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.7.0"
+      version = "3.94.0"
     }
   }
 
   required_version = ">= 1.1.7"
   backend "azurerm" {
-    resource_group_name  = "rg-resourceplanning-test-westeu-001"
-    storage_account_name = "ghallocationtfstatetest"
-    container_name       = "ghallocation-tfstate"
-    key                  = "ghallocation_app.tfstate"
+    use_oidc = true
+    key      = "app.tfstate"
   }
 }
 
-
 provider "azurerm" {
-  skip_provider_registration = "true"
+  subscription_id            = var.subscription_id
+  skip_provider_registration = true
+  use_oidc                   = true
   features {}
 }
-
-
-
 
 provider "kubernetes" {
   host                   = data.azurerm_kubernetes_cluster.main.kube_config.0.host
@@ -39,3 +35,5 @@ provider "helm" {
     cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.main.kube_config.0.cluster_ca_certificate)
   }
 }
+#provider "tls" {}
+data "azurerm_client_config" "current" {}

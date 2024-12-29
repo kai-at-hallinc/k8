@@ -1,0 +1,129 @@
+name: Deploy AKS App to Stage
+on: 
+  workflow_dispatch:
+
+permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      
+jobs: 
+  validate-and-plan:
+    defaults:
+      run:
+        working-directory: ./overlays/app
+    name: analyze terraform code
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
+    env:
+      ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      ARM_USE_AZUREAD: true
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2.5.0
+
+    - name: HashiCorp - Setup Terraform
+      uses: hashicorp/setup-terraform@v2.0.3
+
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -check
+
+    - name: Terraform Init
+      id: init
+      run: |
+        terraform init \
+        -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" \
+        -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" \
+        -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
+        
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+      
+    - name: tfsec
+      uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
+      with:
+        tfsec_args: --soft-fail
+        github_token: ${{ github.token }}
+        
+    - name: Terraform Plan
+      id: plan
+      run: |
+        terraform plan \
+        -input=false \
+        -var-file='input.tfvars' \
+        -lock=false \
+        -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
+      continue-on-error: false
+
+  deploy-to-stage:
+    needs: validate-and-plan
+    defaults:
+      run:
+        working-directory: ./overlays/app
+    name: deploy App to staging environment
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
+    env:
+      ARM_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      ARM_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      ARM_USE_AZUREAD: true 
+      
+      # ARM_USE_AZUREAD environment variable tells the backend to use AzureAD auth rather than trying a create a key.
+      # It means we can limit the permissions applied to the storage account and container to least priviledge: 
+      # https://developer.hashicorp.com/terraform/language/settings/backends/azurerm#use_azuread_auth
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2.5.0
+
+    - name: HashiCorp - Setup Terraform
+      uses: hashicorp/setup-terraform@v2.0.3
+
+    - name: Terraform Init
+      run: |
+        terraform init \
+        -backend-config="resource_group_name=${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}" \
+        -backend-config="storage_account_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" \
+        -backend-config="container_name=${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}"
+      
+    - name: Terraform Apply
+      run: |
+        terraform apply \
+        -auto-approve \
+        -input=false \
+        -var-file='input.tfvars' \
+        -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
+    
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+            client-id: ${{ secrets.AZURE_CLIENT_ID }}
+            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Get AKS Credentials
+      run: | 
+        az aks get-credentials \
+        --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
+        --name ${{ secrets.AKS_CLUSTER_NAME }}
+
+    - name: Run deployments
+      run: |
+        chmod +x ./deploy.sh
+        ./deploy.sh
+        sleep 60
+    
+    - name: Run tests
+      run: |
+        echo "running tests.."
+        chmod +x ./test-pod-to-pod.sh
+        ./test-pod-to-pod.sh
+        

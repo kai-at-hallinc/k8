@@ -1,5 +1,5 @@
 variable "tenant_name" {
-  type = string
+  type        = string
   description = "Name of the tenant you are deploying into."
 }
 
@@ -24,7 +24,7 @@ variable "aks_vm_size" {
 }
 
 variable "parent_resource_group_name" {
-  type = string
+  type        = string
   description = "Name of parent resource group with aks."
 }
 
@@ -44,6 +44,11 @@ variable "vnet_cidr" {
 variable "private_endpoint_cidr" {
   type        = string
   description = "The private endpoint subnet address space."
+}
+
+variable "aks_docker_cidr" {
+  type        = string
+  description = "IP address (in CIDR notation) used as the Docker bridge IP address on nodes. "
 }
 
 variable "aks_cidr" {
@@ -74,8 +79,4 @@ variable "allowed_subnet_ids" {
 variable "allowed_ips" {
   type        = list(string)
   description = "List of IPs to be allowed to access the ACR"
-}
-variable "prefix" {
-  type        = string
-  description = "prefix used for AKS resources"
 }

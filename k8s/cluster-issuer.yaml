@@ -6,7 +6,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: raki.dedigama@thoughtworks.com
+    email: kai@hallinc.onmicrosoft.com
     privateKeySecretRef:
       name: letsencrypt
     solvers:

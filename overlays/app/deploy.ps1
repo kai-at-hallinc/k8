@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # deploy tls cert issuer and frontend ingress
 kubectl apply -f ../../k8s/cluster-issuer.yaml
 kubectl apply -f ../../k8s/frontend-ingress-tls.yaml
@@ -15,5 +13,3 @@ kubectl apply -f ../../templates/timetable-deploy.yaml -n test
 kubectl apply -f ../../templates/optimization-deploy.yaml -n test
 kubectl apply -f ../../templates/rabbitmq-deploy.yaml -n test
 kubectl apply -f ../../templates/celery-deploy.yaml -n test
-
-echo "sleeping for 60 seconds..."
