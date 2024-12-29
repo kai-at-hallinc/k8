@@ -56,6 +56,7 @@ jobs:
       run: |
         terraform plan \
         -input=false \
+        -var-file='input.tfvars' \
         -lock=false \
         -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
       continue-on-error: false
@@ -97,6 +98,8 @@ jobs:
       run: |
         terraform apply \
         -auto-approve \
+        -input=false \
+        -var-file='input.tfvars' \
         -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
 
     # NOTE This is an example of how to login to the Azure CLI, this step is not needed for Terraform
