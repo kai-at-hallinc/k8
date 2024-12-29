@@ -80,7 +80,3 @@ variable "allowed_ips" {
   type        = list(string)
   description = "List of IPs to be allowed to access the ACR"
 }
-variable "prefix" {
-  type        = string
-  description = "prefix used for AKS resources"
-}
