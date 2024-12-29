@@ -1,5 +1,5 @@
 # this terraform module defines the user managed identity used in github oidc authentication.
-# github oidc credential is assigned also using variables in 'locals' file.
+# also github oidc credential is assigned. it uses variables in 'locals' file.
 
 resource "azurerm_user_assigned_identity" "oidc_identity" {
   location            = var.location

@@ -1,8 +1,8 @@
 # this file defines input variables for the oidc deployment
 
-prefix                     = "hallinc-oidc"
+prefix                     = "hallinc-aks"
 github_organisation_target = "kai-at-hallinc"
-github_repo_target         = "terraform-oidc"
-environment                = "dev"
+github_repo_target         = "k8"
+environment                = "stage"
 location                   = "swedencentral"
 tfcontainer                = "tfstate"

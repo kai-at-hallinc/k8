@@ -1,4 +1,4 @@
-# infratructure test
+# K8's Infrastructure POC
 
 ## Pre-requisites
 
@@ -35,14 +35,12 @@ There are four terraform projects for the environment. They are as follows:
     TODO
 
 4. Run Terraform project for app`
+    This deploys K8s namespace, and installs cert-manager and nginx-ingress
     TODO
 
 5. Run Terraform project for database
     TODO
 
-
-
-    This deploys K8s namespace, and installs cert-manager and nginx-ingress
 
 6. Deploy ingress resources to cluster
 
