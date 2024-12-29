@@ -8,7 +8,7 @@ terraform {
 
   # other settings are injected from actions pipeline
   backend "azurerm" {
-    key                  = "core.tfstate"
+    key = "core.tfstate"
   }
 }
 
@@ -23,7 +23,7 @@ provider "azurerm" {
       delete_nested_items_during_deletion = true
     }
   }
-  subscription_id = var.subscription_id
+  subscription_id            = var.subscription_id
   skip_provider_registration = true
 }
 

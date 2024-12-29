@@ -1,11 +1,11 @@
 locals {
-  parent_resource_group             = "${var.parent_resource_group_name}"
-  container_registry                = "acr${var.project}${var.env}${var.tenant_name}"
-  private_endpoint_subnet_name      = "snet-pe-${var.project}-${var.env}-${var.tenant_name}"
-  virtual_network_name              = "vnet-${var.project}-${var.env}-${var.tenant_name}"
-  aks_subnet_name                   = "snet-aks-${var.project}-${var.env}-${var.tenant_name}"
-  aks_node_resource_group           = "rg-nodes-${var.project}-${var.env}-${var.tenant_name}"
-  ingress_static_ip_name            = "ingress-static-ip"
+  parent_resource_group        = var.parent_resource_group_name
+  container_registry           = "acr${var.project}${var.env}${var.tenant_name}"
+  private_endpoint_subnet_name = "snet-pe-${var.project}-${var.env}-${var.tenant_name}"
+  virtual_network_name         = "vnet-${var.project}-${var.env}-${var.tenant_name}"
+  aks_subnet_name              = "snet-aks-${var.project}-${var.env}-${var.tenant_name}"
+  aks_node_resource_group      = "rg-nodes-${var.project}-${var.env}-${var.tenant_name}"
+  ingress_static_ip_name       = "ingress-static-ip"
 }
 
 
@@ -31,5 +31,5 @@ module "container_registry" {
   allowed_ips                       = var.allowed_ips
   allowed_subnet_ids                = [module.network.private_endpoint_subnet_id, module.network.aks_subnet_id]
 
-  depends_on = [ module.network ]
+  depends_on = [module.network]
 }
