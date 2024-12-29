@@ -4,7 +4,7 @@
 
 Install [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) and [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos)
 
-Infra could be deployed to one of four different environments.  :
+Infra can be deployed to:
 * `stage`   : Staging environment in tenant
 
 ## Setting up resources on Azure with Terraform (Manually with Azure CLI)
