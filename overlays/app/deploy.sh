@@ -15,3 +15,5 @@ kubectl apply -f ../../templates/timetable-deploy.yaml -n test
 kubectl apply -f ../../templates/optimization-deploy.yaml -n test
 kubectl apply -f ../../templates/rabbitmq-deploy.yaml -n test
 kubectl apply -f ../../templates/celery-deploy.yaml -n test
+
+echo "sleeping for 60 seconds..."

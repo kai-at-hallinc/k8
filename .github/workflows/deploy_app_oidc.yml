@@ -120,7 +120,6 @@ jobs:
         chmod +x ./deploy.sh
         ./deploy.sh
         sleep 60
-        echo "sleeping for 60 seconds.."
     
     - name: Run tests
       run: |
