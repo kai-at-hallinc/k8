@@ -54,11 +54,3 @@ There are four terraform projects for the environment. They are as follows:
 
     *   Inspect nginx-ingress                          :
             kubectl get services -n ghallocation-dev
-
-
-
- ## Creating the Resource Group and Storage account for Azure backend (Only needs to be done once).
-
-The present setup requires that the parent Azure Resource Group and Azure Storage account (for saving Terraform backend) has already been created on Azure Portal.
-
-TODO
