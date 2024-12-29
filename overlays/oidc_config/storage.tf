@@ -18,6 +18,6 @@ resource "azurerm_storage_container" "tfstate" {
 
 resource "azurerm_role_assignment" "storage_container" {
   scope                = azurerm_storage_container.tfstate.resource_manager_id
-  role_definition_name = "Storage Blob Contributor"
+  role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azurerm_user_assigned_identity.oidc_identity.principal_id
 }

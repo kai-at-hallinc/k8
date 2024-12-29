@@ -11,9 +11,6 @@ terraform {
       version = "2.30.0"
     }
   }
-  backend "azurerm" {
-    key      = "terraform.oidc.tfstate"
-  }
 }
 
 provider "azurerm" {

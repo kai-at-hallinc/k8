@@ -5,6 +5,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = var.virtual_network_resource_group
   address_space       = [var.vnet_cidr]  
 }
+
 # create private endpoint subnet with services
 resource "azurerm_subnet" "private_endpoint" {
   name                 = var.private_endpoint_subnet_name
@@ -22,6 +23,7 @@ resource "azurerm_subnet" "private_endpoint" {
   ]
   depends_on = [azurerm_virtual_network.vnet]
 }
+
 # create cluster subnet with service endpoints
 resource "azurerm_subnet" "aks_subnet" {
   name                 = var.aks_subnet_name

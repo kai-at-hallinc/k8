@@ -3,7 +3,7 @@
 
 resource "azurerm_user_assigned_identity" "oidc_identity" {
   location            = var.location
-  name                = "${var.prefix}-${var.environment}-github-oidc
+  name                = "${var.prefix}-${var.environment}-github-oidc"
   resource_group_name = azurerm_resource_group.aks-resources.name
 }
 

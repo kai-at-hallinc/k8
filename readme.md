@@ -22,14 +22,18 @@ There are four terraform projects for the environment. They are as follows:
 
     *  Logging to Azure CLI     : `az login`
     *  Set the subscription ID  : `az account set --subscription="id"`
-    *  Add local ip address to the storage account where terraform state is stored.
+    
+2. Run Terraform project for oidc_config (storage, RG, UAI) by
 
-2. Run Terraform project for oidc_config (storage, RG, UAI) for a the environment.
+    * Navigate to folder        : `cd overlays/oidc_config`
+    * Initialize terraform      : `terraform init`
+    * Lint the terraform code   : `terraform fmt`
+    * Validate the structure    : `terraform validate`
+    * Apply the terraform       : `terraform apply --var-file=input.tfvars`
 
-        cd overlays/oidc
-        terraform init
-        terraform plan -out=plan.tfplan --var-file=input.tfvars`
-        terraform apply --var-file=input.tfvars`
+    *note: This is a preliminary step and independent structure. All the needed files are in the
+    'oidc_config' folder for simplicity. Az credentials are used for this deployment.*
+
 
 3. Run Terraform project for aks-cluster
     TODO
