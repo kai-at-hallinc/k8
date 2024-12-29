@@ -101,6 +101,17 @@ jobs:
         -input=false \
         -var-file='input.tfvars' \
         -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
+    
+    - name: Run deployment script
+      run: |
+        ./deploy.sh
+        sleep 60
+        echo "waiting 60 seconds"
+    
+    - name: Run test
+      run: |
+        echo "testing pod communications"
+        ./test-pod-to-pod.sh
 
     # NOTE This is an example of how to login to the Azure CLI, this step is not needed for Terraform
     #- name: 'Az CLI login'
