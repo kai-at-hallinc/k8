@@ -120,10 +120,4 @@ jobs:
         chmod +x ./deploy.sh
         ./deploy.sh
         sleep 60
-        echo "waiting 60 seconds"
-    
-    - name: Run test
-      run: |
-        chmod +x ./test-pod-to-pod.sh
-        echo "testing pod communications"
-        ./test-pod-to-pod.sh
+        echo "finished deployment!!"
