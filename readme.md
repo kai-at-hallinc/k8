@@ -34,19 +34,29 @@ There are four terraform projects for the environment. They are as follows:
     *note: This is a preliminary step and independent structure. All the needed files are in the
     'oidc_config' folder for simplicity. Az credentials are used for this deployment.*
 
+3. Setup Github secrets and environment for infrastructure pipelines
+    * AZURE_CLIENT_ID (UMI clientId)
+    * AZURE_SUBSCRIPTION_ID
+    * AZURE_TENANT_ID
+    * AZURE_RESOURCE_GROUP_NAME
+    * BACKEND_AZURE_STORAGE_ACCOUNT_NAME
+    * BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME
+    * ENV: stage
 
-3. Run Terraform project for aks-cluster
+    *note: Secrets are to be set as environment secrets inside the stage environment*
+
+4. Run Terraform project for aks-cluster
     TODO
 
-4. Run Terraform project for app`
+5. Run Terraform project for app`
     This deploys K8s namespace, and installs cert-manager and nginx-ingress
     TODO
 
-5. Run Terraform project for database
+6. Run Terraform project for database
     TODO
 
 
-6. Deploy ingress resources to cluster
+7. Deploy ingress resources to cluster
 
     *   Connect kubectl to created K8s Cluster :
             `az aks get-credentials --resource-group rg-resourceplanning-test-westeu-001 --name ghallocation-dev-aks`

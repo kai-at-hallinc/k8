@@ -1,6 +1,5 @@
 variable "prefix" {
   type    = string
-  default = "github-oidc"
 }
 
 variable "location" {
@@ -15,7 +14,6 @@ variable "github_organisation_target" {
 
 variable "github_repo_target" {
   type    = string
-  default = "my_repo"
 }
 
 variable "environment" {
