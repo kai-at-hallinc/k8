@@ -6,8 +6,14 @@ resource "azurerm_resource_group" "aks-resources" {
   location = var.location
 }
 
-resource "azurerm_role_assignment" "resource_group" {
+resource "azurerm_role_assignment" "resource_group_contributor" {
   scope                = azurerm_resource_group.aks-resources.id
   role_definition_name = "Contributor"
+  principal_id         = azurerm_user_assigned_identity.oidc_identity.principal_id
+}
+
+resource "azurerm_role_assignment" "access_admin" {
+  scope                = azurerm_resource_group.aks-resources.id
+  role_definition_name = "Role Based Access Control Administrator"
   principal_id         = azurerm_user_assigned_identity.oidc_identity.principal_id
 }

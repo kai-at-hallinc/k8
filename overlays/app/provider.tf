@@ -8,20 +8,20 @@ terraform {
 
   required_version = ">= 1.1.7"
   backend "azurerm" {
-    resource_group_name  = "aks-sandbox-rg"
-    storage_account_name = "hallinctfstate"
-    container_name       = "tfstate"
-    key                  = "app.tfstate"
+    use_oidc = true
+    key      = "app.tfstate"
   }
 }
 
 provider "azurerm" {
-  skip_provider_registration = "true"
+  subscription_id            = var.subscription_id
+  skip_provider_registration = true
+  use_oidc                   = true
   features {}
 }
 
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  config_path            = "~/.kube/config"
   host                   = data.azurerm_kubernetes_cluster.main.kube_config.0.host
   client_certificate     = base64decode(data.azurerm_kubernetes_cluster.main.kube_config.0.client_certificate)
   client_key             = base64decode(data.azurerm_kubernetes_cluster.main.kube_config.0.client_key)
@@ -30,10 +30,12 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config"
+    config_path            = "~/.kube/config"
     host                   = data.azurerm_kubernetes_cluster.main.kube_config.0.host
     client_certificate     = base64decode(data.azurerm_kubernetes_cluster.main.kube_config.0.client_certificate)
     client_key             = base64decode(data.azurerm_kubernetes_cluster.main.kube_config.0.client_key)
     cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.main.kube_config.0.cluster_ca_certificate)
   }
 }
+#provider "tls" {}
+data "azurerm_client_config" "current" {}

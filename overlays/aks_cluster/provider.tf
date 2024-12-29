@@ -8,8 +8,8 @@ terraform {
 
   # other setting s from actions pipeline
   backend "azurerm" {
-    key      = "aks.tfstate"
     use_oidc = true
+    key      = "aks.tfstate"
   }
 }
 
