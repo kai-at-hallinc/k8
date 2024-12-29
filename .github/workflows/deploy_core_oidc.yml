@@ -1,4 +1,4 @@
-name: Deploy AKS Core with OIDC
+name: Deploy AKS Core to Stage
 on: 
   workflow_dispatch:
 

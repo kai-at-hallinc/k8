@@ -1,5 +1,5 @@
 variable "tenant_name" {
-  type = string
+  type        = string
   description = "Name of the tenant you are deploying into."
 }
 
@@ -24,7 +24,7 @@ variable "aks_vm_size" {
 }
 
 variable "parent_resource_group_name" {
-  type = string
+  type        = string
   description = "Name of parent resource group with aks."
 }
 

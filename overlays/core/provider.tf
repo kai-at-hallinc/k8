@@ -14,6 +14,7 @@ terraform {
 }
 
 provider "azurerm" {
+  subscription_id = var.subscription_id
   use_oidc                   = true
   skip_provider_registration = true
   features {
@@ -22,11 +23,9 @@ provider "azurerm" {
       recover_soft_deleted_key_vaults = false
     }
     template_deployment {
-      # Ensures that the resources (subnets) created through the deployment are destroyed.
       delete_nested_items_during_deletion = true
     }
   }
-  subscription_id = var.subscription_id
 }
 
 provider "tls" {}
