@@ -6,11 +6,8 @@ terraform {
     }
   }
 
-  #required_version = ">= 1.1.7"
+  # other settings are injected from actions pipeline
   backend "azurerm" {
-    resource_group_name  = "aks-sandbox-rg"
-    storage_account_name = "hallinctfstate"
-    container_name       = "tfstate"
     key                  = "core.tfstate"
   }
 }
