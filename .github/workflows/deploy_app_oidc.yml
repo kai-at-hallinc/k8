@@ -65,8 +65,8 @@ jobs:
     needs: validate-and-plan
     defaults:
       run:
-        working-directory: ./overlays/aks_cluster
-    name: Deploy cluster to staging environment
+        working-directory: ./overlays/app
+    name: deploy App to staging environment
     runs-on: ubuntu-latest
     environment:
       name: stage
