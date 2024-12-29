@@ -9,10 +9,13 @@ terraform {
   # other settings are injected from actions pipeline
   backend "azurerm" {
     key = "core.tfstate"
+    use_oidc = true
   }
 }
 
 provider "azurerm" {
+  use_oidc                   = true
+  skip_provider_registration = true
   features {
     key_vault {
       purge_soft_delete_on_destroy    = true
@@ -26,5 +29,8 @@ provider "azurerm" {
   subscription_id            = var.subscription_id
   skip_provider_registration = true
 }
+
+provider "tls" {}
+data "azurerm_client_config" "current" {}
 
 

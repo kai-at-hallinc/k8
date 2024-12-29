@@ -8,7 +8,7 @@ permissions:
       pull-requests: write
       
 jobs: 
-  static-analysis:
+  validate-and-plan:
     defaults:
       run:
         working-directory: ./overlays/core
@@ -61,6 +61,7 @@ jobs:
       continue-on-error: false
 
   deploy-to-stage:
+    needs: validate-and-plan
     defaults:
       run:
         working-directory: ./overlays/core
