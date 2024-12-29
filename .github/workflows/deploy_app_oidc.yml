@@ -124,6 +124,6 @@ jobs:
     
     - name: Run test
       run: |
-        chmod +x ./deploy.sh
+        chmod +x ./test-pod-to-pod.sh
         echo "testing pod communications"
         ./test-pod-to-pod.sh
