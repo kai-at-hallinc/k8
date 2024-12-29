@@ -101,15 +101,17 @@ jobs:
         -input=false \
         -var-file='input.tfvars' \
         -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
-    
+
     - name: Run deployment script
       run: |
+        chmod +x ./deploy.sh
         ./deploy.sh
         sleep 60
         echo "waiting 60 seconds"
     
     - name: Run test
       run: |
+        chmod +x ./deploy.sh
         echo "testing pod communications"
         ./test-pod-to-pod.sh
 
