@@ -101,6 +101,12 @@ jobs:
         -input=false \
         -var-file='input.tfvars' \
         -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
+    
+    - name: Get AKS Credentials
+      run: | 
+        az aks get-credentials \
+        --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
+        --name ${{ secrets.AKS_CLUSTER_NAME }}
 
     - name: Run deployment script
       run: |
