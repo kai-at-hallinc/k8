@@ -17,9 +17,9 @@ on:
         default: 'stage'
 
 permissions:
-      id-token: write
-      contents: read
-      pull-requests: write
+  id-token: write
+  contents: read
+  pull-requests: write
       
 jobs: 
   validate-and-plan:
