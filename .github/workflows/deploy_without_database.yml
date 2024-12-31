@@ -12,13 +12,18 @@ jobs:
     uses: ./.github/workflows/deploy_core_oidc.yml
     with:
       environment: stage
+    secrets: inherit
   
   deploy-cluster-to-stage:
+    needs: deploy-core-to-stage
     uses: ./.github/workflows/deploy_cluster_oidc.yml
     with:
       environment: stage
+    secrets: inherit
 
   deploy-app-to-stage:
+    needs: deploy-cluster-to-stage
     uses: ./.github/workflows/deploy_app_oidc.yml
     with:
       environment: stage
+    secrets: inherit
