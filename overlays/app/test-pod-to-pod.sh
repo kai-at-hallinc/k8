@@ -11,6 +11,8 @@ function Test_HTMLContent {
     fi
 }
 
+echo "testing ingress.."
+
 # Get pod names containing 'allocation' in the 'test' namespace
 allocation_pods=$(kubectl get pods -n test | grep 'allocation' | awk '{print $1}')
 
