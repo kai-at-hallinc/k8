@@ -1,0 +1,19 @@
+name: Deploy infrastructure without database
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-core-to-stage:
+    uses: ./.github/workflows/deploy_core_oidc.yml
+    with:
+      environment: stage
+  
+  deploy-cluster-to-stage:
+    uses: ./.github/workflows/deploy_cluster_oidc.yml
+    with:
+      environment: stage
+
+  deploy-app-to-stage:
+    uses: ./.github/workflows/deploy_app_oidc.yml
+    with:
+      environment: stage
