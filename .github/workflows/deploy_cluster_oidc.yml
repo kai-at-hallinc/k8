@@ -157,20 +157,7 @@ jobs:
           --resource-group ${{secrets.AZURE_RESOURCE_GROUP_NAME}} \
           --name ${{secrets.AKS_CLUSTER_NAME}} \
           --overwrite-existing
-    
-    - name: Get API Server address
-      run: |
-        API_SERVER=$(az aks show \
-          --resource-group ${{secrets.AZURE_RESOURCE_GROUP_NAME}} \
-          --name ${{secrets.AKS_CLUSTER_NAME}} \
-          --query "fqdn" \
-          -o tsv)
-        echo "API_SERVER=$API_SERVER" >> $GITHUB_ENV
 
     - name: Test API Connection
       run: |
-        if [ -z "$API_SERVER" ]; then
-          echo "API_SERVER is empty"
-          exit 1
-        fi
-        curl -k https://$API_SERVER
+        kubectl cluster-info

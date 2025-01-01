@@ -161,7 +161,6 @@ jobs:
       
       - name: Run ingress tests
         run: |
-          echo "running tests.."
           chmod +x ./test-pod-to-pod.sh
           ./test-pod-to-pod.sh
       

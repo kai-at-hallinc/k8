@@ -68,8 +68,6 @@ resource "helm_release" "cert-manager" {
   }
 }
 
-
-
 resource "helm_release" "nginx-ingress" {
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
@@ -100,8 +98,7 @@ resource "helm_release" "nginx-ingress" {
   ## This is where the public static IP address must be located:-> managed rg
   set {
     name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-resource-group"
-    value = data.azurerm_resource_group.aks_rg.name
-    #value = "rg-resourceplanning-test-westeu-001"
+    value = data.azurerm_resource_group.aks_rg.name 
   }
 
   set {

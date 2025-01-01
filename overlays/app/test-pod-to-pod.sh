@@ -11,7 +11,12 @@ function Test_HTMLContent {
     fi
 }
 
-echo "testing ingress.."
+# test if pods are in running state
+if ! kubectl get pods -n test | grep -q 'Running'; then
+    echo "Error: Not all pods are in Running state" >&2
+    exit 1
+fi
+echo "pods are running. testing ingress.."
 
 # Get pod names containing 'allocation' in the 'test' namespace
 allocation_pods=$(kubectl get pods -n test | grep 'allocation' | awk '{print $1}')
@@ -112,7 +117,7 @@ fi
  echo "Success: allocation frontend returned expected HTML content"
 
 # Test lukkariapi using the ingress public IP
-res10=$(curl -s http://9.223.1.112/lukkariapi/)
+res10=$(curl -s http://$ingress_ip/lukkariapi/)
 string="Backend"
 if ! Test_HTMLContent "$res10" "$string"; then
     echo "Error: timetable backend returned unexpected HTML content" >&2
@@ -121,7 +126,7 @@ fi
 echo "Success: timetable backend returned expected HTML content"
 
 # Test lukkarifrontend using the ingress public IP
-res11=$(curl -s http://9.223.1.112/lukkarifrontend/)
+res11=$(curl -s http://$ingress_ip/lukkarifrontend/)
 string="Frontend"
 if ! Test_HTMLContent "$res11" "$string"; then
     echo "Error: timetable frontend returned unexpected HTML content" >&2
