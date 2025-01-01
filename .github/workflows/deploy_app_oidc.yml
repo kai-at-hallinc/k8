@@ -90,8 +90,7 @@ jobs:
       ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
       ARM_USE_AZUREAD: true 
       
-      # ARM_USE_AZUREAD environment variable tells the backend to use AzureAD auth rather than trying a create a key.
-      # It means we can limit the permissions applied to the storage account and container to least priviledge: 
+      # ARM_USE_AZUREAD environment variable tells the backend to use AzureAD auth
       # https://developer.hashicorp.com/terraform/language/settings/backends/azurerm#use_azuread_auth
 
     steps:
@@ -127,7 +126,7 @@ jobs:
       name: stage
     
     steps:
-      
+
       - name: Checkout Code
         uses: actions/checkout@v2.5.0
 

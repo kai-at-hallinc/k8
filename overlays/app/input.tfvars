@@ -1,4 +1,4 @@
-parent_resource_group_name = "aks-sandbox-rg"
+parent_resource_group_name = "hallinc-aks-stage-rg"
 env                        = "stage"
 project                    = "test"
 location                   = "swedencentral"

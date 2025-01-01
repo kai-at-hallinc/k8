@@ -79,7 +79,7 @@ Deployed resource can be destroyed by:
     * navigate to folder containing the main.tf
     * get storage account access key /SAS
     * install access key as env variable:
-         $env:ARM_ACCESS_KEY=<access key>
+         $env:ARM_ACCESS_KEY=<storage account access key>
     * run terraform init
     * run terraform destroy
     * release lock if needed: terraform force-unlock <lockId>

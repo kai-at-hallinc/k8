@@ -136,12 +136,6 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
-    - name: Get AKS Credentials
-      run: | 
-        az aks get-credentials \
-        --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
-        --name ${{ secrets.AKS_CLUSTER_NAME }}
-    
     - name: Set PowerShell execution policy
       run: |
         pwsh -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force"
