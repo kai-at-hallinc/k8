@@ -13,7 +13,7 @@ function Test_HTMLContent {
 
 # test if pods are in running state
 if ! kubectl get pods -n test | grep -q '1/1'; then
-    echo "Error: Not all pods are in Running state" >&2
+    echo "Error: Not all pods are ready" >&2
     exit 1
 fi
 echo "pods are ready. testing ingress.."
