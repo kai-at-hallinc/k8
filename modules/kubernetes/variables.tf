@@ -68,3 +68,7 @@ variable "cluster_log_analytics_workspace_name" {
   description = "The name of the Analytics workspace"
 }
 
+variable "project" {
+  type        = string
+  description = "The project name."
+}
