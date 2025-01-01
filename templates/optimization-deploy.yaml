@@ -19,8 +19,8 @@ spec:
         - containerPort: 80
         resources:
           limits:
-            memory: "64Mi"
-            cpu: "50m"
+            memory: "128Mi"
+            cpu: "100m"
         env:
         - name: TITLE
           value: "optimization"
