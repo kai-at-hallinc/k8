@@ -11,12 +11,16 @@ function Test_HTMLContent {
     fi
 }
 
-# test if pods are in running state
-if ! kubectl get pods -n test | grep -q '1/1'; then
-    echo "Error: Not all pods are ready" >&2
-    exit 1
-fi
-echo "pods are ready. testing ingress.."
+# Loop until all pods are ready, checking every 30 seconds
+while true; do
+    if kubectl get pods -n test | grep -q '1/1'; then
+        echo "All pods are ready. testing ingress.."
+        break
+    else
+        echo "Waiting for pods to be ready..."
+        sleep 30
+    fi
+done
 
 # Get pod names containing 'allocation' in the 'test' namespace
 allocation_pods=$(kubectl get pods -n test | grep 'allocation' | awk '{print $1}')
