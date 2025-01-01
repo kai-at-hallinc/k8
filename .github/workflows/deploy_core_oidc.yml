@@ -136,9 +136,7 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
-    - name: Set PowerShell execution policy
-      run: |
-        pwsh -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force"
-    
     - name: Test connection to ACR
-      run: pwsh -File ./test-vnet.ps1
+      run: |
+        chmod +x /./test-vnet.ps1
+        pwsh -File ./test-vnet.ps1
