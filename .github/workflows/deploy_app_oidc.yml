@@ -75,7 +75,7 @@ jobs:
         -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
       continue-on-error: false
 
-  deploy-to-stage:
+  deploy-ingress-to-stage:
     needs: validate-and-plan
     defaults:
       run:
@@ -115,29 +115,49 @@ jobs:
         -input=false \
         -var-file='input.tfvars' \
         -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
+  
+  deploy-apps-to-stage:
+    needs: deploy-ingress-to-stage
+    defaults:
+      run:
+        working-directory: ./overlays/app
+    name: Deploy App to staging
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
     
-    - name: 'Az CLI login'
-      uses: azure/login@v1
-      with:
-            client-id: ${{ secrets.AZURE_CLIENT_ID }}
-            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    steps:
+      
+      - name: Checkout Code
+        uses: actions/checkout@v2.5.0
 
-    - name: Get AKS Credentials
-      run: | 
-        az aks get-credentials \
-        --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
-        --name ${{ secrets.AKS_CLUSTER_NAME }}
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+              client-id: ${{ secrets.AZURE_CLIENT_ID }}
+              tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Run deployments
-      run: |
-        chmod +x ./deploy.sh
-        ./deploy.sh
-        sleep 60
-    
-    - name: Run tests
-      run: |
-        echo "running tests.."
-        chmod +x ./test-pod-to-pod.sh
-        ./test-pod-to-pod.sh
-        
+      - name: Get AKS Credentials
+        run: | 
+          az aks get-credentials \
+          --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
+          --name ${{ secrets.AKS_CLUSTER_NAME }}
+
+      - name: Run deployments
+        run: |
+          chmod +x ./deploy.sh
+          ./deploy.sh
+          sleep 60
+      
+      - name: Run ingress tests
+        run: |
+          echo "running tests.."
+          chmod +x ./test-pod-to-pod.sh
+          ./test-pod-to-pod.sh
+      
+      - name: Delete test resources
+        run: |
+          chmod +x ./delete.sh
+          ./delete.sh
+          

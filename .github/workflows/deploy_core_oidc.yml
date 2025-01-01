@@ -90,8 +90,7 @@ jobs:
       ARM_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
       ARM_USE_AZUREAD: true 
       
-      # ARM_USE_AZUREAD environment variable tells the backend to use AzureAD auth rather than trying a create a key.
-      # It means we can limit the permissions applied to the storage account and container to least priviledge: 
+      # ARM_USE_AZUREAD environment variable tells the backend to use AzureAD auth.  
       # https://developer.hashicorp.com/terraform/language/settings/backends/azurerm#use_azuread_auth
 
     steps:
@@ -115,15 +114,37 @@ jobs:
         -input=false \
         -var-file='input.tfvars' \
         -var "parent_resource_group_name=${{secrets.AZURE_RESOURCE_GROUP_NAME}}"
+    
+  Test-Core-Network:
+    needs: deploy-to-stage
+    defaults:
+      run:
+        working-directory: ./overlays/core
+    name: Test Core Network
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2.5.0
 
-    # NOTE This is an example of how to login to the Azure CLI, this step is not needed for Terraform
-    #- name: 'Az CLI login'
-    #  uses: azure/login@v1
-    #  with:
-    #      client-id: ${{ secrets.AZURE_CLIENT_ID }}
-    #      tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-    #      subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-    #- name: 'Run Azure CLI commands'
-    #  run: |
-    #      az account show
-    #      az group list
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    
+    - name: Get AKS Credentials
+      run: | 
+        az aks get-credentials \
+        --resource-group ${{ secrets.AKS_RESOURCE_GROUP }} \
+        --name ${{ secrets.AKS_CLUSTER_NAME }}
+    
+    - name: Set PowerShell execution policy
+      run: |
+        pwsh -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force"
+    
+    - name: Test connection to ACR
+      run: pwsh -File ./test-vnet.ps1

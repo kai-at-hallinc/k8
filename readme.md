@@ -82,5 +82,7 @@ Deployed resource can be destroyed by:
          $env:ARM_ACCESS_KEY=<access key>
     * run terraform init
     * run terraform destroy
+    * release lock if needed: terraform force-unlock <lockId>
+    * provide resource group
 
     *note: provide the terraform with needed variables and fix possible errors!*
