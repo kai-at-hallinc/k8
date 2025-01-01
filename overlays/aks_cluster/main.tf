@@ -27,6 +27,7 @@ data "azurerm_subnet" "aks_subnet" {
 module "kubernetes" {
   source                                  = "../../modules/kubernetes"
   location                                = var.location
+  project                                 = var.project
   env                                     = var.env
   aks_rg                                  = local.parent_resource_group
   node_resource_group                     = local.aks_node_resource_group
