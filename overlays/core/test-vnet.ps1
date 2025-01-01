@@ -75,6 +75,29 @@ if ($message -match "(\d+)% packet loss") {
 # Cleanup
 Write-Output "Cleaning up test resources.."
 if ($vm_aks) {
+
+    # Delete the VM
     az vm delete --resource-group $RG --name vm-aks --yes
+    
+    # Delete the network security group associated with the VM
+    $vm_nsg = (az network nsg list --resource-group $RG --query "[?contains(name, 'vm-aks')].name" -o tsv)
+    if ($vm_nsg) {
+        az network nsg delete --resource-group $RG --name $vm_nsg
+    }
+    # Delete the public IP address associated with the VM
+    $vm_public_ip = (az network public-ip list --resource-group $RG --query "[?contains(name, 'vm-aks')].name" -o tsv)
+    if ($vm_public_ip) {
+        az network public-ip delete --resource-group $RG --name $vm_public_ip
+    }
+    # Delete the network interface associated with the VM
+    $vm_nic = (az network nic list --resource-group $RG --query "[?contains(name, 'vm-aks')].name" -o tsv)
+    if ($vm_nic) {
+        az network nic delete --resource-group $RG --name $vm_nic
+    }
+    # Delete the OS disk associated with the VM
+    $vm_disk = (az disk list --resource-group $RG --query "[?contains(name, 'vm-aks')].name" -o tsv)
+    if ($vm_disk) {
+        az disk delete --resource-group $RG --name $vm_disk --yes
+    }
 }
 Write-Output "Cleanup done."
