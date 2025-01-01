@@ -96,6 +96,11 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2.5.0
+    
+    - name: Fetch latest code
+      run: |
+        git fetch origin ${{ github.ref_name }}
+        git reset --hard origin/${{ github.ref_name }}
 
     - name: HashiCorp - Setup Terraform
       uses: hashicorp/setup-terraform@v2.0.3
@@ -129,6 +134,11 @@ jobs:
 
       - name: Checkout Code
         uses: actions/checkout@v2.5.0
+      
+      - name: Fetch latest code
+        run: |
+          git fetch origin ${{ github.ref_name }}
+          git reset --hard origin/${{ github.ref_name }}
 
       - name: 'Az CLI login'
         uses: azure/login@v1
