@@ -158,6 +158,7 @@ jobs:
           --name ${{secrets.AKS_CLUSTER_NAME}} \
           --overwrite-existing
 
-    - name: Test API Connection
+    - name: Test Cluster endpoint Connection
       run: |
-        kubectl cluster-info
+        chmod +x ./test-cluster-endpoints.sh
+        ./test-cluster-endpoints.sh
