@@ -13,7 +13,7 @@ function Test_HTMLContent {
 
 # Loop until all pods are ready, checking every 30 seconds
 while true; do
-    if kubectl get pods -n test | grep -q '1/1'; then
+    if ! kubectl get pods -n test | grep -qE 'Pending|ContainerCreating'; then
         echo "All pods are ready. testing ingress.."
         break
     else
