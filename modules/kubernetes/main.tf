@@ -57,7 +57,7 @@ resource "azurerm_role_assignment" "aks_subnet" {
 # allocate public static ip for ingress
 resource "azurerm_public_ip" "ingress_static_ip" {
   name = var.ingress_static_ip_name
-  domain_name_label = "ghallocation-${var.env}"
+  domain_name_label = "${var.project}-aks-${var.env}"
   resource_group_name = var.aks_rg
   location = var.location
   sku = "Standard"

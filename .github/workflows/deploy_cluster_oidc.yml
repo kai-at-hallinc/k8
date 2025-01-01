@@ -146,8 +146,8 @@ jobs:
     - name: Get API Server address
       run: |
         API_SERVER=$(az aks show \
-          --resource-group $RESOURCE_GROUP \
-          --name $CLUSTER_NAME \
+          --resource-group ${{secrets.AZURE_RESOURCE_GROUP_NAME}} \
+          --name ${{secrets.AKS_CLUSTER_NAME}} \
           --query "fqdn" \
           -o tsv)
         echo "API_SERVER=$API_SERVER" >> $GITHUB_ENV
